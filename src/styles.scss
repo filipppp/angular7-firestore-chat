@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { background-color: #ecf0f1; overflow: hidden}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-card{
+  width: 600px;
+  margin: 20px auto;
+  grid-area: auto;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  mat-card-content{
+    width: 90%;
+  }
+  form{
+    display: flex;
+    flex-direction: column;
+  }
+}

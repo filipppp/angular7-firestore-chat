@@ -1,0 +1,86 @@
+
+
+::ng-deep .mat-list .mat-list-item .mat-line{
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+mat-list{
+  display: flex;
+  flex-direction: column;
+
+}
+
+mat-list-item{
+  margin-bottom: 20px;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  color: #7f8c8d !important;
+  font-size: 0.9rem !important;
+  border: rgba(149, 165, 166, 0.2) solid 1px;
+  border-radius: 4px;
+  width: 70% !important;
+  display: block !important;
+}
+
+mat-list-item.right{
+  align-self: flex-end;
+  background: #ecf0f1;
+}
+
+mat-card-header{
+  width: 95%;
+  display: flex !important;
+  flex-direction: row;
+}
+
+mat-toolbar{
+    background-color: transparent;
+
+  mat-toolbar-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    span {
+      display: block;
+      align-self: center;
+    }
+  }
+}
+
+#sendInput{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
+
+  mat-form-field{
+    width: 90%;
+  }
+}
+.messageViewport{
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  height: 300px;
+  width: 550px;
+}
