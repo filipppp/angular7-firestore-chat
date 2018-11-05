@@ -8,23 +8,29 @@
   <mat-card-content>
     <mat-list #chats>
       <h3 mat-subheader>Nachrichten</h3>
-      <cdk-virtual-scroll-viewport itemSize="50" class="messageViewport">
-        <mat-list-item *ngFor="let message of (chatMessages | async)" [ngClass]="{'right': message.author === 'Me'}">
+      <cdk-virtual-scroll-viewport *ngIf=" messages | async as rawMessages; else spinner" itemSize="50" class="messageViewport">
+        <mat-list-item *cdkVirtualFor="let message of rawMessages" [class.right]="message.author === 'Me'">
           <img matListAvatar src="./assets/avatar.svg" alt="Avatar Icon">
           <h5 mat-line>{{message.content}}</h5>
         </mat-list-item>
       </cdk-virtual-scroll-viewport>
+      <ng-template #spinner>
+        <mat-spinner></mat-spinner>
+      </ng-template>
     </mat-list>
 
-    <form id="sendInput" (ngSubmit)="sendMessage(messageInput)">
+
+
+
+    <form id="sendInput" #sendMessageForm (ngSubmit)="sendMessage(messageInput, sendMessageForm)">
       <mat-form-field>
         <input #messageInput autocomplete="off" [formControl]="messageFormControl" matInput minlength="1" maxlength="250" placeholder="Chat Message">
-        <mat-error *ngIf="messageFormControl.hasError('required')">
+        <mat-error *ngIf="messageFormControl.errors?.required">
           Message is <strong>too short</strong>
         </mat-error>
         <mat-hint align="end">{{messageInput.value.length}} / 250</mat-hint>
       </mat-form-field>
-      <button type="submit" [disabled]="!messageFormControl.valid" mat-mini-fab color="primary"><mat-icon>send</mat-icon></button>
+      <button type="submit" [disabled]="messageFormControl.invalid" mat-mini-fab color="primary"><mat-icon>send</mat-icon></button>
     </form>
   </mat-card-content>
 

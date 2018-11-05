@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Message} from '../app.model';
-import {FormControl, FormGroupDirective, Validators} from '@angular/forms';
+import {FormControl, NgForm, Validators} from '@angular/forms';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Observable, Subject} from 'rxjs';
+import {ChatService} from '../chat.service';
 
 @Component({
   selector: 'app-conversation',
@@ -11,46 +12,32 @@ import {Observable, Subject} from 'rxjs';
   styleUrls: ['./conversation.component.scss']
 })
 export class ConversationComponent implements OnInit {
-  @ViewChild(FormGroupDirective) myForm;
   @ViewChild(CdkVirtualScrollViewport) viewport: CdkVirtualScrollViewport;
-
-  chatMessages: Subject<Message>;
   messageFormControl = new FormControl('', [
     Validators.required,
     Validators.maxLength(250)
   ]);
-  messages: Array<Message> = [
-    {
-      author: 'nigger',
-      content: 'Was geht',
-      postedAt: new Date()
-    },
-    {
-      author: 'e',
-      content: 'Bastard',
-      postedAt: new Date()
-    },
-    {
-      author: 'nigg3er',
-      content: 'Halt die goschen',
-      postedAt: new Date()
-    },
-  ];
+  messages: Observable<Message[]>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, public chatService: ChatService) {
 
   }
 
   ngOnInit() {
-    const chatName = this.route.snapshot.paramMap.get('name');
-  }
+    const chatID = this.route.snapshot.paramMap.get('id');
+    this.chatService.getMessagesFromChat(chatID).subscribe(x => console.log(x))
+    this.messages = this.chatService.getMessagesFromChat(chatID);
+    }
 
   backToList() {
     this.router.navigateByUrl('/chat');
   }
 
-  async sendMessage(element: HTMLInputElement) {
-    element.value = '';
+  sendMessage(element: HTMLInputElement, form: HTMLFormElement) {
+    this.chatService.addMessage()
+
+    form.reset();
+    this.messageFormControl.reset();
    // this.viewport.getRenderedRange().start;
    // this.viewport.scrollToIndex();
     console.log(this.viewport.getDataLength());

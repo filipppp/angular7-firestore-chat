@@ -9,7 +9,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/chat', pathMatch: 'full'},
   {path: 'login', component: LoginComponent, data: {type: 'login'}},
   {path: 'chat', component: ChatComponent, data: {type: 'list'}},
-  {path: 'chat/:name', component: ConversationComponent, data: {type: 'chat'}},
+  {path: 'chat/:id', component: ConversationComponent, data: {type: 'chat'}},
   {path: '**', component: ErrorComponent}
 ];
 

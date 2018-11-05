@@ -15,8 +15,8 @@ export class ChatComponent implements OnInit {
   constructor(private router: Router, public chatService: ChatService) { }
 
   ngOnInit() {
+    this.chatService.getChats().subscribe(data => console.log(data));
     this.chats = this.chatService.getChats();
-    this.chats.subscribe(chat => console.log(chat))
   }
 
 
