@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {AngularFirestore, AngularFirestoreCollection, DocumentData} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection, DocumentData, DocumentReference} from '@angular/fire/firestore';
 import {Chat, Message} from './app.model';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
+import {tryCatch} from 'rxjs/internal-compatibility';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +23,10 @@ export class ChatService {
       .snapshotChanges()
       .pipe(
         map(actions => {
-            return actions.map(action => {
+          return actions.map(action => {
             const data = action.payload.doc.data() as Chat;
             const id = action.payload.doc.id;
-            return { id, ...data };
+            return {id, ...data};
           });
         })
       ) as Observable<Chat[]>;
@@ -43,19 +44,33 @@ export class ChatService {
       ) as Observable<Chat>;
   }
 
-  getMessagesFromChat(id: string): Observable<Message[]> {
+  getMessagesFromChat(chatID: string): Observable<Message[]> {
     return this.chatsRef
-      .doc(id)
-      .collection('messages',  ref => ref.orderBy('postedAt'))
+      .doc(chatID)
+      .collection('messages', ref => ref.orderBy('postedAt'))
       .valueChanges() as Observable<Message[]>;
   }
 
-  addMessage(message: Message, chat: Chat) {
-
+  async addMessage(message: Message, chatID: string): void {
+    console.log(Date.now())
+    try {
+      const response: DocumentReference = await this.chatsRef
+        .doc(chatID)
+        .collection('messages')
+        .add(message as DocumentData);
+      return response.id;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  addChat(chat: Chat) {
-
+  async addChat(chat: Chat): void {
+    try {
+      const response: DocumentReference = await this.afs.collection('chats')
+        .add(chat as DocumentData);
+      return response.id;
+    } catch (e) {
+      throw new Error(e);
+    }
   }
-
 }

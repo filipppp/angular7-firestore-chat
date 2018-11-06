@@ -32,6 +32,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
     BrowserAnimationsModule,
     AngularMaterialModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence(),
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,

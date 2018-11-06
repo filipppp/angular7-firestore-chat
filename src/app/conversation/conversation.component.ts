@@ -18,15 +18,16 @@ export class ConversationComponent implements OnInit {
     Validators.maxLength(250)
   ]);
   messages: Observable<Message[]>;
+  chatID: string;
 
   constructor(private route: ActivatedRoute, private router: Router, public chatService: ChatService) {
 
   }
 
   ngOnInit() {
-    const chatID = this.route.snapshot.paramMap.get('id');
-    this.chatService.getMessagesFromChat(chatID).subscribe(x => console.log(x))
-    this.messages = this.chatService.getMessagesFromChat(chatID);
+    this.chatID = this.route.snapshot.paramMap.get('id');
+    this.chatService.getMessagesFromChat(this.chatID).subscribe(x => console.log(x))
+    this.messages = this.chatService.getMessagesFromChat(this.chatID);
     }
 
   backToList() {
@@ -34,7 +35,11 @@ export class ConversationComponent implements OnInit {
   }
 
   sendMessage(element: HTMLInputElement, form: HTMLFormElement) {
-    this.chatService.addMessage()
+    this.chatService.addMessage({
+      postedAt: Date.now(),
+      content: element.value,
+      author: 'Me'
+    }, this.chatID);
 
     form.reset();
     this.messageFormControl.reset();
