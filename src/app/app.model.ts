@@ -1,14 +1,24 @@
+import {DocumentReference} from '@angular/fire/firestore';
+
 export interface Message {
-  author: string;
+  author: DocumentReference;
   content: string;
-  postedAt: Date;
+  postedAt: number;
+  id?: string;
 }
 
 export interface Chat {
-  admins: Array<string>;
+  admins: Array<DocumentReference>;
   createdAt: Date;
-  members: Array<string>;
-  messages?: Array<Message>;
+  members: Array<DocumentReference>;
+  messages: Array<Message>;
   name: string;
   id?: string;
+}
+
+export interface User {
+  email: string;
+  name: string;
+  uid: string;
+  password: string;
 }
