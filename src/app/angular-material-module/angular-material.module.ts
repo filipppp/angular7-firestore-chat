@@ -20,7 +20,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     FormsModule,
     MatListModule,
     MatTooltipModule,
-    MatGridListModule
+    MatGridListModule,
   ],
   exports: [
     CommonModule,

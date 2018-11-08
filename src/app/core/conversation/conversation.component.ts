@@ -1,10 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Message} from '../app.model';
+import {Chat, Message} from '../../app.model';
 import {FormControl, NgForm, Validators} from '@angular/forms';
 import {CdkVirtualScrollViewport} from '@angular/cdk/scrolling';
 import {Observable, Subject} from 'rxjs';
-import {ChatService} from '../chat.service';
+import {ChatService} from '../../firebase/chat.service';
+import {AuthService} from '../../firebase/auth.service';
 
 @Component({
   selector: 'app-conversation',
@@ -19,14 +20,18 @@ export class ConversationComponent implements OnInit {
   ]);
   messages: Observable<Message[]>;
   chatID: string;
+  chat: Observable<Chat>;
 
-  constructor(private route: ActivatedRoute, private router: Router, public chatService: ChatService) {
+  constructor(private route: ActivatedRoute, private router: Router, public chatService: ChatService, public auth: AuthService) {
 
   }
 
   ngOnInit() {
     this.chatID = this.route.snapshot.paramMap.get('id');
-    this.chatService.getMessagesFromChat(this.chatID).subscribe(x => console.log(x))
+
+    this.chat = this.chatService.getChat(this.chatID);
+
+    this.chatService.getMessagesFromChat(this.chatID).subscribe((x) => console.log(x))
     this.messages = this.chatService.getMessagesFromChat(this.chatID);
     }
 
@@ -34,11 +39,11 @@ export class ConversationComponent implements OnInit {
     this.router.navigateByUrl('/chat');
   }
 
-  sendMessage(element: HTMLInputElement, form: HTMLFormElement) {
+  sendMessage(element: HTMLInputElement, form: HTMLFormElement, authorID) {
     this.chatService.addMessage({
       postedAt: Date.now(),
       content: element.value,
-      author: 'Me'
+      author: authorID
     }, this.chatID);
 
     form.reset();

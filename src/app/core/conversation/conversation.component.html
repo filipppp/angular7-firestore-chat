@@ -1,5 +1,5 @@
-<mat-card class="example-card">
-  <mat-toolbar>
+<mat-card class="example-card" *ngIf="chat | async; else spinner">
+  <mat-toolbar *ngIf="auth.currUser | async ">
     <mat-toolbar-row>
       <button (click)="backToList()" mat-mini-fab color="primary"><mat-icon>keyboard_backspace</mat-icon></button>
       <span>Chat Name</span>
@@ -8,21 +8,14 @@
   <mat-card-content>
     <mat-list #chats>
       <h3 mat-subheader>Nachrichten</h3>
-      <cdk-virtual-scroll-viewport *ngIf=" messages | async as rawMessages; else spinner" itemSize="50" class="messageViewport">
-        <mat-list-item *cdkVirtualFor="let message of rawMessages" [class.right]="message.author === 'Me'">
-          <img matListAvatar src="./assets/avatar.svg" alt="Avatar Icon">
-          <h5 mat-line>{{message.content}}</h5>
+      <cdk-virtual-scroll-viewport *ngIf="messages | async" itemSize="50" class="messageViewport">
+        <mat-list-item *ngFor="let message of messages" [class.right]="message.author === auth.user.uid">
+          <img matListAvatar [src]="message.user.photoURL" alt="Avatar Icon">
+          <h5 mat-line>{{message.user.displayName}}: {{message.content}}</h5>
         </mat-list-item>
       </cdk-virtual-scroll-viewport>
-      <ng-template #spinner>
-        <mat-spinner></mat-spinner>
-      </ng-template>
     </mat-list>
-
-
-
-
-    <form id="sendInput" #sendMessageForm (ngSubmit)="sendMessage(messageInput, sendMessageForm)">
+    <form id="sendInput" #sendMessageForm (ngSubmit)="sendMessage(messageInput, sendMessageForm, auth)">
       <mat-form-field>
         <input #messageInput autocomplete="off" [formControl]="messageFormControl" matInput minlength="1" maxlength="250" placeholder="Chat Message">
         <mat-error *ngIf="messageFormControl.errors?.required">
@@ -33,5 +26,8 @@
       <button type="submit" [disabled]="messageFormControl.invalid" mat-mini-fab color="primary"><mat-icon>send</mat-icon></button>
     </form>
   </mat-card-content>
-
 </mat-card>
+
+<ng-template>
+  <mat-spinner #spinner></mat-spinner>
+</ng-template>

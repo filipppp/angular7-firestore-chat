@@ -15,5 +15,9 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button color="primary" matTooltip="Login into your Account" matTooltipShowDelay=800 matTooltipHideDelay=1000 (click)="this.router.navigateByUrl('/chat')">Login</button>
+    <button mat-raised-button (click)="auth.googleLogin()">
+      <i class="fa fa-google"></i> Connect Google
+    </button>
+
   </mat-card-actions>
 </mat-card>

@@ -13,4 +13,6 @@
     </mat-selection-list>
     <mat-spinner *ngIf="!(chats | async)" #spinner></mat-spinner>
   </mat-card-content>
+  <button id="addChatButton" (click)="openDialog()" mat-fab color="primary"><mat-icon>add</mat-icon></button>
+  <button mat-raised-button color="primary" (click)="auth.signOut()">Sign Out</button>
 </mat-card>

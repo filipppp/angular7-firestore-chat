@@ -39,8 +39,7 @@ import { trigger, transition, style, group, query, animate } from '@angular/anim
   ]
 })
 export class AppComponent {
-
-
+    
   getState(outlet) {
     return outlet.activatedRouteData.type;
   }
