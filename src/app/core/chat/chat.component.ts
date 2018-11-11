@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ChatService} from '../../firebase/chat.service';
+import {ChatService} from '../firebase/chat.service';
 import {Observable} from 'rxjs';
 import {Chat} from '../../app.model';
 import {MatDialog} from '@angular/material';
-import {DialogComponent} from '../../dialog/dialog.component';
-import {AuthService} from '../../firebase/auth.service';
+import {DialogComponent} from '../dialog/dialog.component';
+import {AuthService} from '../firebase/auth.service';
 
 @Component({
   selector: 'app-chat',

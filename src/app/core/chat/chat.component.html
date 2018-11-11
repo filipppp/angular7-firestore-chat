@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
 <mat-card class="example-card">
   <mat-card-header>
     <mat-card-title>Your Chats</mat-card-title>
@@ -14,5 +15,5 @@
     <mat-spinner *ngIf="!(chats | async)" #spinner></mat-spinner>
   </mat-card-content>
   <button id="addChatButton" (click)="openDialog()" mat-fab color="primary"><mat-icon>add</mat-icon></button>
-  <button mat-raised-button color="primary" (click)="auth.signOut()">Sign Out</button>
+  <button mat-raised-button color="primary"  (click)="auth.signOut()">Sign Out</button>
 </mat-card>

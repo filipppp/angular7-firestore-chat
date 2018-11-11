@@ -1,9 +1,11 @@
 import {DocumentReference} from '@angular/fire/firestore';
+import Timestamp = firestore.Timestamp;
+import {firestore} from 'firebase';
 
 export interface Message {
   author: DocumentReference | string;
   content: string;
-  postedAt: number;
+  postedAt: Timestamp;
   id?: string;
 }
 

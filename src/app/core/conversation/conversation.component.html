@@ -1,21 +1,22 @@
-<mat-card class="example-card" *ngIf="chat | async; else spinner">
-  <mat-toolbar *ngIf="auth.currUser | async ">
+<mat-card class="example-card" *ngIf="chat | async as chatInfo; else spinner">
+  <mat-toolbar>
     <mat-toolbar-row>
       <button (click)="backToList()" mat-mini-fab color="primary"><mat-icon>keyboard_backspace</mat-icon></button>
-      <span>Chat Name</span>
+      <span>{{ chatInfo.name }}</span>
     </mat-toolbar-row>
   </mat-toolbar>
-  <mat-card-content>
+  <mat-card-content *ngIf="auth.currUser | async as user">
     <mat-list #chats>
       <h3 mat-subheader>Nachrichten</h3>
-      <cdk-virtual-scroll-viewport *ngIf="messages | async" itemSize="50" class="messageViewport">
-        <mat-list-item *ngFor="let message of messages" [class.right]="message.author === auth.user.uid">
-          <img matListAvatar [src]="message.user.photoURL" alt="Avatar Icon">
+      <cdk-virtual-scroll-viewport *ngIf="infiniteMessages | async as rawMessages" itemSize="50" (scrolledIndexChange)="nextMessagesBatch($event, rawMessages[0]?.postedAt)" class="messageViewport">
+        <mat-spinner *ngIf="loadingNewBatch"></mat-spinner>
+        <mat-list-item *cdkVirtualFor="let message of rawMessages; trackBy: trackByCreated" [ngClass]="{'right fadeInRight': message.author.id === user.uid, 'fadeInLeft': message.author.id !== user.uid}" class="animated">
+          <img matListAvatar [src]="message.user?.photoURL" alt="Avatar Icon">
           <h5 mat-line>{{message.user.displayName}}: {{message.content}}</h5>
         </mat-list-item>
       </cdk-virtual-scroll-viewport>
     </mat-list>
-    <form id="sendInput" #sendMessageForm (ngSubmit)="sendMessage(messageInput, sendMessageForm, auth)">
+    <form id="sendInput" #sendMessageForm (ngSubmit)="sendMessage(messageInput, sendMessageForm, auth.getUserReference(user.uid))">
       <mat-form-field>
         <input #messageInput autocomplete="off" [formControl]="messageFormControl" matInput minlength="1" maxlength="250" placeholder="Chat Message">
         <mat-error *ngIf="messageFormControl.errors?.required">
@@ -28,6 +29,6 @@
   </mat-card-content>
 </mat-card>
 
-<ng-template>
-  <mat-spinner #spinner></mat-spinner>
+<ng-template #spinner>
+  <mat-spinner></mat-spinner>
 </ng-template>

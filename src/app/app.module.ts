@@ -11,10 +11,10 @@ import {environment} from '../environments/environment';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireStorageModule} from '@angular/fire/storage';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { DialogComponent } from './dialog/dialog.component';
+import { DialogComponent } from './core/dialog/dialog.component';
 import {ChatModule} from './core/chat.module';
-import {ChatService} from './firebase/chat.service';
-import {AuthService} from './firebase/auth.service';
+import {ChatService} from './core/firebase/chat.service';
+import {AuthService} from './core/firebase/auth.service';
 
 @NgModule({
   declarations: [
@@ -27,12 +27,12 @@ import {AuthService} from './firebase/auth.service';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ChatModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule.enablePersistence(),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireAuthModule,
-    ChatModule
+    AngularFireAuthModule
   ],
   providers: [
     AuthService,

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-import {Chat, Message, User} from '../app.model';
+import {Chat, Message, User} from '../../app.model';
 import {combineLatest, Observable, of} from 'rxjs';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Router} from '@angular/router';
 import {map, switchMap, take} from 'rxjs/operators';
-import {auth} from 'firebase';
+import {auth, firestore} from 'firebase';
+import DocumentReference = firestore.DocumentReference;
 
 @Injectable({
   providedIn: 'root'
@@ -78,5 +79,12 @@ export class AuthService {
   async signOut() {
     await this.afAuth.auth.signOut();
     this.router.navigateByUrl('/login');
+  }
+
+  getUserReference(uid): DocumentReference {
+    return this.afs
+      .collection('users')
+      .doc<User>(uid)
+      .ref;
   }
 }
